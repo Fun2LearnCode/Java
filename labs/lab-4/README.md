@@ -16,3 +16,7 @@ int getSize() | checks how many items are in the array.
 void grow() | grows the array to a larger size if needed.
 void shrink() | shrinks the array to a smaller size if needed.
 String toString() | returns the array as a string to be printed.
+
+## grow and shrink
+
+The Custom array is meant to be built upon a regular array, because of this the array is going to need to grow and shrink to save resources. grow is meant to double the size of the array when it runs out of space and shrink is meant to halve the array when the array is 1/4th the way used. 
