@@ -5,6 +5,5 @@ public enum StatusMessage {
 	MESSAGE,
 	ADDUSER,
 	REMOVEUSER,
-	LOADONLINE,
 	NEWUSER
 }

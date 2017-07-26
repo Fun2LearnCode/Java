@@ -1,4 +1,4 @@
-package client;
+package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,12 +7,15 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import interfaces.InputHandler;
+
+
 public class InputDisplay extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private boolean newMessage;
-	private String message;
 	private JTextField textField;
-	public InputDisplay(){
+	private InputHandler inputHandler;
+	public InputDisplay(InputHandler inputHandler){
+		this.inputHandler = inputHandler;
 		setBounds(10, 205, 415, 45);
 		setLayout(null);
 		
@@ -27,23 +30,14 @@ public class InputDisplay extends JPanel {
 		btnNewButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sendMessage();
+				send();
 			}
 		});
 		add(btnNewButton);
 	}
-	public void sendMessage(){
-		if(!textField.getText().equals("")){
-			newMessage = true;
-			message = textField.getText();
-			textField.setText("");
-		}
-	}
-	public boolean newMessage(){
-		return newMessage;
-	}
-	public String getMessage(){
-		newMessage = false;
-		return message;
+	
+	public void send(){
+		inputHandler.send(textField.getText());
+		textField.setText("");
 	}
 }

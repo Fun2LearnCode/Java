@@ -3,24 +3,19 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import common.Message;
+import interfaces.MessageHandler;
 
 public class ClientThread extends Thread{
 	private Socket socket;
 	private ObjectInputStream streamIn;
-	private ArrayList<Message> messages;
 	private boolean running;
-	private Object dataLock = new Object();
-	public AtomicInteger newInput;
-	public ClientThread(Socket socket) {
-		newInput = new AtomicInteger();
-		running = true;
+	private MessageHandler messageHandler;
+	public ClientThread(Socket socket, MessageHandler messageHandler) {
+		this.messageHandler = messageHandler;
 		this.socket = socket;
-		messages = new ArrayList<Message>();
-		setName("Client Thread");
+		running = true;
 		start();
 	}
 	private void open() {
@@ -38,25 +33,15 @@ public class ClientThread extends Thread{
 			e.printStackTrace();
 		}
 	}
-	public Message getMessage(){
-		 synchronized(dataLock){
-			 newInput.decrementAndGet();
-			 return messages.remove(0);
-		 }
-	}
 	public void run() {
 		open();
-		Message temp;
 		while (running) {
 			try {
-				temp = (Message)streamIn.readObject();
-				synchronized(dataLock){
-					messages.add(temp);
-					newInput.getAndIncrement();
-				}
+				messageHandler.handleIncomingMessage((Message)streamIn.readObject());
 			} catch (IOException | ClassNotFoundException ioe) {
 				System.out.println("Disconnected from the server");
 				kill();
+				System.exit(0);
 			}
 	
 		}

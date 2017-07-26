@@ -5,15 +5,17 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import common.Message;
-import common.StatusMessage;
+import gui.ChatFrame;
+import interfaces.OutputStream;
 
-public class ChatClient implements Runnable{
-	private ChatFrame frame;
+
+public class ChatClient implements OutputStream{
 	private Socket socket;
 	private ObjectOutputStream streamOut;
-	private ClientThread thread;
+	
 	public ChatClient(){
-		frame = new ChatFrame();
+		LogicHandler  displayLogic = new LogicHandler (this);
+		new ChatFrame(displayLogic);
 		while(true){
 			try {
 				socket = new Socket("192.168.0.15", 7958);
@@ -28,51 +30,17 @@ public class ChatClient implements Runnable{
 				}
 			}
 		}
-		thread = new ClientThread(socket);
-		Thread temp = new Thread(this);
-		temp.setName("Chat client thread");
-		temp.start();
+		new ClientThread(socket, displayLogic);
 	}
-	private void send(Message message) throws IOException{
-		streamOut.writeObject(message);
-		streamOut.flush();
-	}
+	
 	@Override
-	public void run() {
-		while(true){
-			if(thread.newInput.get() > 0){
-				Message temp = thread.getMessage();
-				frame.displayMessage(temp);
-			}
-			if(frame.newMessage()){
-				try {
-					send(frame.getMessage());
-				} catch (IOException e) {
-					System.out.println("Server Closed");
-				}
-			}
-			if(!frame.getRunning()){
-				try {
-					send(new Message("", "0", frame.getId(), StatusMessage.QUIT));
-				} catch (IOException e) {
-					System.out.println("Closing client");
-				}
-			}
-			if(!thread.isAlive()){
-				try{
-					streamOut.close();
-					socket.close();
-				} catch (IOException e) {
-					System.out.println("Closing client");
-				}finally{
-					System.exit(0);
-				}
-			}
-			try {
-				Thread.sleep(5);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+	public void send(Message message) {
+		try {
+			streamOut.writeObject(message);
+			streamOut.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		
 	}
 }

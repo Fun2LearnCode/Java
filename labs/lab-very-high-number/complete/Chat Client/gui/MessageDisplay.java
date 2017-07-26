@@ -1,23 +1,20 @@
-package client;
+package gui;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
 
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import common.Message;
+import interfaces.Display;
 
-public class ChatDisplay extends JScrollPane{
+public class MessageDisplay extends JScrollPane implements Display{
 	private static final long serialVersionUID = 1L;
 	private JPanel panel;
-	private String toId;
-	public ChatDisplay(){		
-		toId = "0";
+	public MessageDisplay(){		
 		panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		panel.setBackground(Color.WHITE);
@@ -25,29 +22,36 @@ public class ChatDisplay extends JScrollPane{
 		setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		setViewportView(panel);
 	}
-	public void displayMessage(Message message){
+	@Override
+	public void displaySent(String message){
 		JEditorPane temp = new JEditorPane();
-		temp.setText(message.getMessage());
-		if(toId.equals(message.getTo())){	
-			temp.setBorder(new EmptyBorder(0, 150, 0, 0));
-		}else{
-			temp.setBorder(new EmptyBorder(0, 0, 0, 150));	
-		}
+		temp.setText(message);
+		temp.setBorder(new EmptyBorder(0, 150, 0, 0));
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 1;
 		panel.add(temp, c);
 		validate();
-		getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
-	}
-	public void loadNewUser(String id, ArrayList<Message>history){
-		panel.removeAll();
 		panel.validate();
 		panel.repaint();
-		validate();
+		repaint();
 		getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
-		toId = id;
-		for(Message message : history){
-			displayMessage(message);
-		}
+	}
+	@Override
+	public void displayRecived(String message){
+		JEditorPane temp = new JEditorPane();
+		temp.setText(message);
+		temp.setBorder(new EmptyBorder(0, 0, 0, 150));	
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 1;
+		panel.add(temp, c);
+		validate();
+		panel.validate();
+		panel.repaint();
+		repaint();
+		getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
+	}
+	@Override
+	public void clear() {
+		panel.removeAll();
 	}
 }

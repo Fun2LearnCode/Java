@@ -1,26 +1,25 @@
 package client;
 
-import common.Message;
 
-public class Node {
-	private Node next;
-	private Message data;
-	public Node(Message data){
+public class Node<E> {
+	private Node<E> next;
+	private E data;
+	public Node(E data){
 		this.data = data;
 		this.next = null;
 	}
-	public Node(Message data, Node next){
+	public Node(E data, Node<E> next){
 		this.data = data;
 		this.next = next;
 	}
-	public Node getNext() {
+	public Node<E> getNext() {
 		return next;
 	}
-	public void setNext(Node next) {
+	public void setNext(Node<E> next) {
 		this.next = next;
 	}
 
-	public Message getData() {
+	public E getData() {
 		return data;
 	}
 }
