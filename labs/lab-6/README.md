@@ -1,0 +1,3 @@
+# Lab 6
+
+For lab 6 you'll be exploring the uses of imports and packages in java projects. In this lab you'll create two different packages with two different class files in each. The two packages will be referred to as package A and package B, but their names do not matter so long as it is consistent throughout. Package A needs one class that only knows about the other class in the same package. The other class in the package needs to know only of one class in package B. Package B needs one class that know about a class from package A, any class, it doesn't matter. The other class in package B needs to know about all classes in the project, so both classes from package A.
