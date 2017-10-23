@@ -22,7 +22,7 @@ The questions are as follows:
     6. Does the string contain the word pie, if yes, where?
     7. Not a question but, change all the mentions of pizza to a different food.
 
-The program should be able to run once and display all of these questions, this means for question 6 having an if statement to check where if it does exist.
+The program should be able to run once and display all of these questions, this means for question 6 having an if statement to check where if it does exist
 
 #### Additional work (if needed)
 
