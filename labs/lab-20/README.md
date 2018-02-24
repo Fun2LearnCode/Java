@@ -1,6 +1,6 @@
 # Lab 20
 
-Lab 20 is about begins the review.
+Lab 20 begins the review.
 
 ## Review
 
